@@ -22,6 +22,7 @@ router.post('/',(req,res)=>{
     speciality : req.body.speciality,
     fee : req.body.fee,
     pin : req.body.pin,
+    reg_number : req.body.reg_number,
     certi_link : req.body.certi_link
   });
   const result= doctor.save();

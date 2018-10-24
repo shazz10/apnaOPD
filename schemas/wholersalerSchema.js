@@ -1,6 +1,6 @@
 const mongoose=require('mongoose');
 
-const retailerSchema = new mongoose.Schema({
+const wholesalerSchema = new mongoose.Schema({
   name : String,
   email : String,
   phone_number : String,
@@ -11,5 +11,5 @@ const retailerSchema = new mongoose.Schema({
   certi_link : String
 });
 
-const retailers= mongoose.model('Retailer',retailerSchema);
-module.exports=retailers;
+const wholesalers= mongoose.model('Wholesaler',wholesalerSchema);
+module.exports=wholesalers;

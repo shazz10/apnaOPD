@@ -10,6 +10,7 @@ const doctorSchema = new mongoose.Schema({
   speciality : String,
   fee : Number,
   pin : Number ,
+  reg_number : String,
   certi_link : String
 });
 

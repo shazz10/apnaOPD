@@ -1,18 +1,18 @@
 var express = require('express');
 var router = express.Router();
 
-var Retailer = require('../schemas/retailerSchema');
+var Wholesaler = require('../schemas/wholesalerSchema');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
-  Retailer.find({},function (err,retailer) {
+  Wholesaler.find({},function (err,wholesaler) {
     if(err) throw err;
-    res.json(retailer)
+    res.json(wholesaler)
   });
 });
 
 router.post('/',(req,res)=>{
-  const retailer = new Retailer({
+  const wholesaler = new Wholesaler({
     name : req.body.name,
     email : req.body.email,
     phone_number : req.body.phone_number,
@@ -22,10 +22,10 @@ router.post('/',(req,res)=>{
     gst_number : req.body.gst_number,
     certi_link : req.body.certi_link
   });
-  const result= retailer.save();
+  const result= wholesaler.save();
 
-  res.json(retailer);
-  debug(retailer);
+  res.json(wholesaler);
+  debug(wholesaler);
 });
 
 module.exports = router;
