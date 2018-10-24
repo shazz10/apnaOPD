@@ -20,6 +20,7 @@ router.post('/',async (req,res)=>{
     name : req.body.name,
     email : req.body.email,
     imageUrl : req.body.imageUrl,
+    gid : req.body.gid,
     address : req.body.address,
     isDoctor : req.body.isDoctor,
     isRetailer : req.body.isRetailer,

@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
   name : String,
   email : String,
   imageUrl : String,
+  gid : String,
   address : [
   		{
   			house_lane1: String,

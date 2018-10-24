@@ -15,6 +15,7 @@ router.post('/',(req,res)=>{
   const wholesaler = new Wholesaler({
     name : req.body.name,
     email : req.body.email,
+    gid : req.body.gid,
     phone_number : req.body.phone_number,
     office_number : req.body.office_number,
     address : req.body.address,
