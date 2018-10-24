@@ -3,6 +3,7 @@ const mongoose=require('mongoose');
 const userSchema = new mongoose.Schema({
   name : String,
   email : String,
+  imageUrl : String,
   isDoctor : {type : Boolean, default : false },
   isRetailer : {type : Boolean, default : false },
   isWholeseller : {type : Boolean, default : false },
