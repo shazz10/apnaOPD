@@ -13,8 +13,16 @@ router.get('/', function(req, res) {
   });
 });
 
+router.get('/:gid', function(req,res) {
+  User.findOne({gid: req.params.gid}, function (err,user) {
+    if(err) throw err;
+    res.json(user)
+  });
+});
 
-router.post('/',async (req,res)=>{
+
+
+router.post('/',(req,res)=>{
 
   const user = new User({
     name : req.body.name,
@@ -29,11 +37,13 @@ router.post('/',async (req,res)=>{
     isSupplier : req.body.isSupplier
 
   });
-  debug(req.body);
-  const result =  await user.save();
+  
+  const result =  user.save();
 
   res.json(user);
+  debug(user);
   
 });
+
 
 module.exports = router;
