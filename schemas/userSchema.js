@@ -7,17 +7,18 @@ const userSchema = new mongoose.Schema({
   gid : String,
   address : [
   		{
-  			house_lane1: String,
+  			house_lane: String,
   			locality: String,
   			city: String,
   			district : String,
   			state : String,
   			pincode : Number
+        phone_
   		}
   ],
   isDoctor : {type : Boolean, default : false },
   isRetailer : {type : Boolean, default : false },
-  isWholeseller : {type : Boolean, default : false },
+  isWholesaler : {type : Boolean, default : false },
   isManufacturer : {type : Boolean, default : false },
   isSupplier : {type : Boolean, default : false }
 });

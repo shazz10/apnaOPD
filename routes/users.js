@@ -20,7 +20,14 @@ router.get('/:gid', function(req,res) {
   });
 });
 
-
+/*
+router.put('/:gid', (req,res) =>{
+  User.findByIdAndUpdate(req.params.gid,{$set : req.body}, function(err,user){
+    if(err) throw err;
+    res.send('User updated')
+  });
+});
+*/
 
 router.post('/',(req,res)=>{
 
@@ -32,7 +39,7 @@ router.post('/',(req,res)=>{
     address : req.body.address,
     isDoctor : req.body.isDoctor,
     isRetailer : req.body.isRetailer,
-    isWholeseller : req.body.isWholeseller,
+    isWholesaler : req.body.isWholesaler,
     isManufacturer : req.body.isManufacturer,
     isSupplier : req.body.isSupplier
 
