@@ -12,8 +12,8 @@ const userSchema = new mongoose.Schema({
   			city: String,
   			district : String,
   			state : String,
-  			pincode : Number
-        phone_
+  			pincode : Number,
+        phone_number : String
   		}
   ],
   isDoctor : {type : Boolean, default : false },

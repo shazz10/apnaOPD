@@ -1,4 +1,5 @@
 var express = require('express');
+bodyParser = require('body-parser').json();
 var router = express.Router();
 
 var debug = require('debug')('apnaopd:server');
@@ -19,6 +20,26 @@ router.get('/:gid', function(req,res) {
     res.send(user);
   });
 });
+
+//update the user after it becomes something
+router.put('/is/:gid',function(req,res){
+  User.findOne({gid:req.params.gid}, function(err,user){
+    if(err) throw err;
+    else if(user){
+      user['isDoctor'] = req.body.isDoctor,
+      /*user.isRetailer = req.body.isRetailer,
+      user.isWholesaler = req.body.isWholesaler,
+      user.isManufacturer = req.body.isManufacturer,
+      user.isSupplier = req.body.isSupplier*/
+      user.save();
+    }
+    else{
+      res.status(404).send("Record doesnt exist!");
+    }
+  });
+});
+
+
 
 
 //push new address
@@ -73,7 +94,7 @@ router.put('/:gid', (req,res) =>{
 */
 
 
-router.post('/',(req,res)=>{
+router.post('/',bodyParser,(req,res)=>{
 
   const user = new User({
     name : req.body.name,
@@ -89,7 +110,10 @@ router.post('/',(req,res)=>{
 
   });
 
-  const result =  user.save();
+  user.save(function(err){
+    if(err) throw err;
+    console.log(req.body);
+  });
 
   res.send(user);
   debug(user);
