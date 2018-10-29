@@ -12,7 +12,11 @@ const doctorSchema = new mongoose.Schema({
   fee : Number,
   pin : Number ,
   reg_number : String,
-  certi_link : String
+  certi_link : String,
+  department : String,
+  history : [
+      gid : String,
+  ]
 });
 
 const doctors= mongoose.model('Doctor',doctorSchema);

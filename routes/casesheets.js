@@ -10,6 +10,7 @@ router.get('/', function(req, res) {
   var casesheet = {
     habit: [{title : "1"},{title : "2"},{title : "3"}],
     habitat : [{title : "1"},{title : "2"},{title : "3"}]
+    department : [ {title : "ortho"} , {title : ""}]
   }
   res.send(casesheet);
 });
