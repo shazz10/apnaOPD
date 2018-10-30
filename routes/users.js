@@ -26,12 +26,13 @@ router.put('/is/:gid',function(req,res){
   User.findOne({gid:req.params.gid}, function(err,user){
     if(err) throw err;
     else if(user){
-      user['isDoctor'] = req.body.isDoctor,
-      /*user.isRetailer = req.body.isRetailer,
-      user.isWholesaler = req.body.isWholesaler,
-      user.isManufacturer = req.body.isManufacturer,
-      user.isSupplier = req.body.isSupplier*/
+      user['isDoctor'] = req.body.isDoctor;
+      user['isRetailer'] = req.body.isRetailer;
+      user['isWholesaler'] = req.body.isWholesaler;
+      user['isManufacturer'] = req.body.isManufacturer;
+      user['isSupplier'] = req.body.isSupplier;
       user.save();
+      res.send(user);
     }
     else{
       res.status(404).send("Record doesnt exist!");

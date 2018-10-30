@@ -25,21 +25,20 @@ router.post('/',(req,res)=>{
     verifyCerti : req.body.verifyCerti
   });
 
-  router.delete('/:gid',(req,res)=>{
-    Become.findOne({gid:req.params.gid}, function(err,become){
-      if(err)
-        throw err;
-      console.log(user)
-      //user.remove(function(err) {
-      //    if (err) throw err;
-     // });
-    });
-  });
+ 
 
   const result= become.save();
 
-  res.json(become);
-  debug(become);
+  res.send(become);
+  
 });
 
+ router.delete('/:gid',(req,res)=>{
+    Become.findOne({gid:req.params.gid}, function(err,become){
+      if(err)
+        throw err;
+      become.remove();
+      res.send(become);
+    });
+  });
 module.exports = router;

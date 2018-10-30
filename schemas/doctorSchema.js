@@ -14,9 +14,6 @@ const doctorSchema = new mongoose.Schema({
   reg_number : String,
   certi_link : String,
   department : String,
-  history : [
-      gid : String,
-  ]
 });
 
 const doctors= mongoose.model('Doctor',doctorSchema);
