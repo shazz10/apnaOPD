@@ -1,8 +1,9 @@
 const mongoose=require('mongoose');
 
 const casesheetSchema = new mongoose.Schema({
-  habit : String,
-  habitat : String
+	department : Number,
+	
+
 });
 
 const casesheets= mongoose.model('Casesheet',casesheetSchema);

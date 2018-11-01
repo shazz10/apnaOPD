@@ -6,14 +6,43 @@ const doctorSchema = new mongoose.Schema({
   gid : String,
   phone_number : String,
   office_number : String,
-  address : String,
+  address : 
+      {
+        house_lane: String,
+        locality: String,
+        city: String,
+        district : String,
+        state : String,
+        pincode : Number,
+        phone_number : String
+      }
+  ,
   degree : String ,
   speciality : String,
   fee : Number,
-  pin : Number ,
   reg_number : String,
   certi_link : String,
   department : String,
+  visiting:[
+      {
+        patient_gid:String,
+        casesheet_uid:String
+      }
+  ],
+  history : [
+      {
+        patient_gid: String,
+        casesheet_uid : String
+      }
+  ],
+  time_slab : [
+    {
+        available : Boolean,
+        start : Date,
+        end : Date,
+        time_per : Number
+    }
+  ]
 });
 
 const doctors= mongoose.model('Doctor',doctorSchema);

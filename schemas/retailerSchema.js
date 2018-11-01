@@ -6,8 +6,19 @@ const retailerSchema = new mongoose.Schema({
   gid : String,
   phone_number : String,
   office_number : String,
-  address : String,
-  pin : Number ,
+  address : {
+		house_lane: String,
+		locality: String,
+		city: String,
+		district : String,
+		state : String,
+		pincode : Number,
+		},
+  available_prescriptions :[
+  		{
+  			uid : String
+  		}
+  ],
   gst_number : String,
   certi_link : String
 });
