@@ -17,8 +17,7 @@ const wholesalerSchema = new mongoose.Schema({
   			pincode : Number,
         	phone_number : String
   		}
-  ]
-  pin : Number ,
+  ],
   gst_number : String,
   certi_link : String
 });

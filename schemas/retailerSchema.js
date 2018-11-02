@@ -10,7 +10,7 @@ const retailerSchema = new mongoose.Schema({
         full_name : String,
         house_no: String,
         locality: String,
-        landmark : String
+        landmark : String,
         city: String,
         state : String,
         pincode : Number,
