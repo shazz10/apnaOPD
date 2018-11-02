@@ -24,9 +24,9 @@ router.post('/',(req,res)=>{
     certi_link : req.body.certi_link
   });
   const result= retailer.save();
-
-  res.json(retailer);
   debug(retailer);
+  res.send(retailer);
+
 });
 
 router.put('/presc_list/:gid',function(req, res) {

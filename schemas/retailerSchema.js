@@ -18,7 +18,7 @@ const retailerSchema = new mongoose.Schema({
 		},
   available_prescriptions :[
   		{
-  			uid : String
+  			prescription_id : String
   		}
   ],
   gst_number : String,
