@@ -14,6 +14,7 @@ var wholesalersRouter= require('./routes/wholesalers');
 var casesheetsRouter = require("./routes/casesheets");
 var becomesRouter = require('./routes/becomes');
 var prescriptionRouter = require('./routes/prescriptions');
+var offerRouter = require('./routes/offers');
 
 var app = express();
 
@@ -36,6 +37,7 @@ app.use('/api/wholesalers', wholesalersRouter);
 app.use('/api/casesheets',casesheetsRouter);
 app.use('/api/becomes',becomesRouter);
 app.use('/api/prescription',prescriptionRouter);
+app.use('/api/offer',offerRouter);
 
 
 // catch 404 and forward to error handler

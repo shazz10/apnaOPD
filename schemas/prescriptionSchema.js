@@ -5,13 +5,14 @@ const prescriptionSchema = new mongoose.Schema({
 	prescription_link : String,
 	comment: String,
 	address : {
-  			house_lane: String,
-  			locality: String,
-  			city: String,
-  			district : String,
-  			state : String,
-  			pincode : Number,
-        	phone_number : String
+        full_name : String,
+        house_no: String,
+        locality: String,
+        landmark : String
+        city: String,
+        state : String,
+        pincode : Number,
+        phone_number : String
   		}
 
 });

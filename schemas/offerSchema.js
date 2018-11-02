@@ -3,15 +3,17 @@ const mongoose=require('mongoose');
 const offerSchema = new mongoose.Schema({
 	patient_gid : String,
 	retailer_gid : String,
-	offer:[
+	eoffer:[
 		{
 			medicine : String,
 			price : Number,
 			offered_price : Number,
 		}
 	],
+	address_id : String,
 	delivery_time : Date,
-	delivery_charge : Number
+	delivery_charge : Number,
+	status : Number
 });
 
 const offers= mongoose.model('Offer',offerSchema);

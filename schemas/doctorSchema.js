@@ -8,10 +8,11 @@ const doctorSchema = new mongoose.Schema({
   office_number : String,
   address : 
       {
-        house_lane: String,
+        full_name : String,
+        house_no: String,
         locality: String,
+        landmark : String
         city: String,
-        district : String,
         state : String,
         pincode : Number,
         phone_number : String
