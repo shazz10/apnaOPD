@@ -36,7 +36,7 @@ app.use('/api/retailers', retailersRouter);
 app.use('/api/wholesalers', wholesalersRouter);
 app.use('/api/casesheets',casesheetsRouter);
 app.use('/api/becomes',becomesRouter);
-app.use('/api/prescription',prescriptionRouter);
+app.use('/api/prescriptions',prescriptionRouter);
 app.use('/api/offer',offerRouter);
 
 
