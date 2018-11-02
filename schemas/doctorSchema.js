@@ -22,7 +22,7 @@ const doctorSchema = new mongoose.Schema({
   fee : Number,
   reg_number : String,
   certi_link : String,
-  department : String,
+  department : Number,
   visiting:[
       {
         patient_gid:String,

@@ -22,7 +22,7 @@ router.post('/',(req,res)=>{
     degree : req.body.degree,
     speciality : req.body.speciality,
     fee : req.body.fee,
-    pin : req.body.pin,
+    department : req.body.department,
     reg_number : req.body.reg_number,
     certi_link : req.body.certi_link
   });
@@ -31,5 +31,27 @@ router.post('/',(req,res)=>{
   res.json(doctor);
   debug(doctor);
 });
+
+//Get according to filter
+router.get('/filter',async (req,res)=>{
+  //console.log(req.query);
+  const doctors = await Doctor.find({fee : {$lte:parseInt(req.query.fee)}, department : parseInt(req.query.department)});
+
+  res.send(doctors);
+});
+
+router.get('/filter/city', async(req,res) => {
+  var cities =[];
+    await Doctor.find({},function(err,doctor){
+        for (var i = doctor.length - 1; i >= 0; i--) {
+          var city = doctor[i].address.city;
+          if(city )
+          cities.push(city);
+        }
+    });
+    res.send(cities);
+});
+
+
 
 module.exports = router;

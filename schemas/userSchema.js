@@ -69,7 +69,7 @@ const userSchema = new mongoose.Schema({
       {
         
       }
-  ]
+  ],
   isDoctor : {type : Boolean, default : false },
   isRetailer : {type : Boolean, default : false },
   isWholesaler : {type : Boolean, default : false },
