@@ -35,7 +35,19 @@ router.post('/',(req,res)=>{
 //Get according to filter
 router.get('/filter',async (req,res)=>{
   //console.log(req.query);
-  const doctors = await Doctor.find({fee : {$lte:parseInt(req.query.fee)}, department : parseInt(req.query.department)});
+  const doctors = await Doctor.find({
+    fee : {$lte:parseInt(req.query.fee)},
+    department : parseInt(req.query.department),
+  });
+
+  // if(doctors && req.query.date)
+  // {
+  //   for (var i = doctors.length - 1; i >= 0; i--) {
+  //     for (var j = doctors[i].time_slab.length - 1; j >= 0; j--) {
+  //       if(doctors[i].time_slab[j].start >= req
+  //     }
+  //   }
+  // }
 
   res.send(doctors);
 });

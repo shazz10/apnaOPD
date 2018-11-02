@@ -11,7 +11,7 @@ router.get('/patient/:patient_gid', function(req, res) {
   });
 });
 
-router.get('/retailer/:reatiler_gid', function(req, res) {
+router.get('/retailer/:retailer_gid', function(req, res) {
   Placed.find({retailer_gid:req.params.retailer_gid},function (err,placed) {
     if(err) throw err;
     res.json(placed)

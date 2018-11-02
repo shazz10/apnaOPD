@@ -29,4 +29,21 @@ router.post('/',(req,res)=>{
   debug(retailer);
 });
 
+router.put('/presc_list/:gid',function(req, res) {
+  Retailer.findOne({gid: req.params.gid}, function (err,retailer) {
+    if(err)
+    {
+      throw err;
+    }
+    else if(retailer){
+      retailer.available_prescriptions.push(req.body.available_prescriptions);
+      retailer.save();
+      res.send(retailer);
+    }
+    else {
+      res.status(404).send("Record does not exist!");
+    }
+  });
+});
+
 module.exports = router;
