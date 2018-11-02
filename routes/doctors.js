@@ -40,7 +40,7 @@ router.get('/filter',async (req,res)=>{
     department : parseInt(req.query.department),
   });
 
-  // if(doctors && req.query.date)
+  // if(doctors && req.query.date && req.query.city)
   // {
   //   for (var i = doctors.length - 1; i >= 0; i--) {
   //     for (var j = doctors[i].time_slab.length - 1; j >= 0; j--) {
