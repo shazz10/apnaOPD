@@ -13,7 +13,7 @@ var retailersRouter= require('./routes/retailers');
 var wholesalersRouter= require('./routes/wholesalers');
 var casesheetsRouter = require("./routes/casesheets");
 var becomesRouter = require('./routes/becomes');
-
+var prescriptionRouter = require('./routes/prescriptions');
 
 var app = express();
 
@@ -35,6 +35,7 @@ app.use('/api/retailers', retailersRouter);
 app.use('/api/wholesalers', wholesalersRouter);
 app.use('/api/casesheets',casesheetsRouter);
 app.use('/api/becomes',becomesRouter);
+app.use('/api/prescriptions',prescriptionRouter);
 
 
 
