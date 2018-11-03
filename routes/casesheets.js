@@ -4,6 +4,7 @@ var router = express.Router();
 var debug = require('debug')('apnaopd:server');
 
 var Casesheet = require('../schemas/casesheetSchema');
+var User = require('../schemas/userSchema');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -32,10 +33,30 @@ router.get('/', function(req, res) {
     habitat_gen: [{id:1,title : "Hot"},{id:2,title : "Cold"},{id:3,title : "Humid"},{id:4,title : "Dusty"},{id:5,title : "Polluted"}],
     emotional_gen: [{id:1,title : "Happy"},{id:2,title : "Normal"},{id:3,title : "Excited"},{id:4,title : "Depressed"}],
     pain_gen: [{id:1,title : "Mild"},{id:2,title : "Moderate"},{id:3,title : "Severe"},{id:4,title : "Burning"},{id:5,title : "Pulsating"}],
-    sensation_neuro: [{id:1,title : "Front Head"},{id:2,title : "Back Head"},{id:3,title : "Left Shoulder"},{id:4,title : "Left Hand Upper"},{id:5,title : "Left Hand Lower"},{id:6,title : "Right Hand Upper"},{id:7,title : "Right Hand Lower"},{id:8,title : "Left Chest"},{id:9,title : "Right Chest"},{id:10,title : "Left Back Chest"},{id:11,title : "Right Back Chest"}],
+    site_gen: [{id:1,title : "Front Head"},{id:2,title : "Back Head"},{id:3,title : "Left Shoulder"},{id:4,title : "Left Hand Upper"},{id:5,title : "Left Hand Lower"},{id:6,title : "Right Hand Upper"},{id:7,title : "Right Hand Lower"},{id:8,title : "Left Chest"},{id:9,title : "Right Chest"},{id:10,title : "Left Back Chest"},{id:11,title : "Right Back Chest"}],
     vomit_gen: [{id:1,title : "Yes"},{id:2,title : "No"},{id:3,title : "Nausea"}],   
   }
   res.send(casesheet);
 });
+
+
+
+router.put('/:gid',async function(req, res) {
+    console.log(req.body)
+  User.findOne({gid: req.params.gid}, function (err,user) {
+    if(err)
+    {
+      throw err;
+    }
+    else if(user){
+      user.casesheet.push(req.body.casesheet);
+      user.save();
+      res.send(user);
+    }
+    else {
+      res.status(404).send("Record does not exist!");
+    }
+  });
+})
 
 module.exports = router;

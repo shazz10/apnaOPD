@@ -1,0 +1,5 @@
+{"_id":{"$oid":"5bdb2ca9c9f67c22d6524cc0"},"name":"Sj","fee":{"$numberInt":"200"},"department":{"$numberInt":"1"},"visiting":[],"history":[],"time_slab":[],"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5bdb2f0443bc6e2521963ea1"},"name":"asdasdasdj","fee":{"$numberInt":"300"},"department":{"$numberInt":"7"},"visiting":[],"history":[],"time_slab":[],"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5bdcae08e945ef5037e0e094"},"name":"Sasdj","gid":"1","fee":{"$numberInt":"200"},"department":{"$numberInt":"7"},"visiting":[],"history":[],"time_slab":[],"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5bdcae18e945ef5037e0e095"},"name":"Sasasddj","gid":"2","fee":{"$numberInt":"100"},"department":{"$numberInt":"7"},"visiting":[],"history":[],"time_slab":[],"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5bdcae20e945ef5037e0e096"},"name":"Sasasasfwqddj","gid":"3","fee":{"$numberInt":"400"},"department":{"$numberInt":"7"},"visiting":[],"history":[],"time_slab":[],"__v":{"$numberInt":"0"}}

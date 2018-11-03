@@ -4,6 +4,35 @@ var router = express.Router();
 var Doctor = require('../schemas/doctorSchema');
 
 /* GET users listing. */
+router.get('/filter',async (req,res)=>{
+  //console.log(req.query);
+  const doctors = await Doctor.find({
+    fee : {$lte:parseInt(req.query.fee)},
+    department : parseInt(req.query.department),
+    city : parseInt(req.query.city)
+  });
+
+  // if(doctors && req.query.date)
+  // {
+  //   for (var i = doctors.length - 1; i >= 0; i--) {
+  //     for (var j = doctors[i].time_slab.length - 1; j >= 0; j--) {
+  //       if(doctors[i].time_slab[j].start >= req
+  //     }
+  //   }
+  // }
+
+  res.send(doctors);
+});
+
+router.get('/:gid', function(req, res) {
+  Doctor.find({gid:req.params.gid},function (err,doctor) {
+    if(err) throw err;
+    res.json(doctor)
+  });
+});
+
+
+
 router.get('/', function(req, res) {
   Doctor.find({},function (err,doctor) {
     if(err) throw err;
@@ -33,24 +62,7 @@ router.post('/',(req,res)=>{
 });
 
 //Get according to filter
-router.get('/filter',async (req,res)=>{
-  //console.log(req.query);
-  const doctors = await Doctor.find({
-    fee : {$lte:parseInt(req.query.fee)},
-    department : parseInt(req.query.department),
-  });
 
-  // if(doctors && req.query.date && req.query.city)
-  // {
-  //   for (var i = doctors.length - 1; i >= 0; i--) {
-  //     for (var j = doctors[i].time_slab.length - 1; j >= 0; j--) {
-  //       if(doctors[i].time_slab[j].start >= req
-  //     }
-  //   }
-  // }
-
-  res.send(doctors);
-});
 
 router.get('/filter/city', async(req,res) => {
   var cities =[];

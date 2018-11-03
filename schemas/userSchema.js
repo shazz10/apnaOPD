@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
         chestpain : Number,
         respiration : Number,
         cardio_condition : Number,
-        
+        bleeding : Number,
 
         //GenetoUrinary
         general_survery : Number,
