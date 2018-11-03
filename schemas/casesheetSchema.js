@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 
 const casesheetSchema = new mongoose.Schema({
-
+	patient_gid: String,
 	casesheet : 
       {
 
@@ -49,7 +49,15 @@ const casesheetSchema = new mongoose.Schema({
 
         comment : String
 
-      }            
+      },
+      diagnosed_report : [
+      	{
+      		doctor_gid:String,
+      		report:String,
+      		prescription_link : String,
+      		presciption_id:String
+      	}
+      ]            
 });
 
 const casesheets= mongoose.model('Casesheet',casesheetSchema);

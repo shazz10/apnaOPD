@@ -2,8 +2,9 @@ var express = require('express');
 var router = express.Router();
 var debug = require('debug')('apnaopd:server');
 
-var Prescription = require('../schemas/prescriptionSchema');
+var Prescription = require('../schemas/prescription_retailerSchema');
 var Retailer = require('../schemas/retailerSchema');
+var Prescription_doctor =require('../schemas/prescription_doctorSchema');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -33,7 +34,7 @@ router.post('/',async(req,res)=>{
       element.available_prescriptions.push(pid);
       element.save();
       });
-  debug(prescription);
+  //debug(prescription);
   res.send(prescription);
 
 });

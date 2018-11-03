@@ -3,6 +3,7 @@ const mongoose=require('mongoose');
 const prescriptionSchema = new mongoose.Schema({
 	patient_gid : String,
 	prescription_link : String,
+    prescription_id : String,
 	comment: String,
 	address : {
         full_name : String,
@@ -17,5 +18,5 @@ const prescriptionSchema = new mongoose.Schema({
 
 });
 
-const prescriptions= mongoose.model('Prescription',prescriptionSchema);
+const prescriptions= mongoose.model('Prescription_Retailer',prescriptionSchema);
 module.exports=prescriptions;
