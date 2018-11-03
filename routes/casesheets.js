@@ -41,15 +41,18 @@ router.get('/', function(req, res) {
 
 
 
-router.put('/:gid',async function(req, res) {
-    console.log(req.body)
+router.post('/:gid',async function(req, res) {
+    const casesheet = new Casesheet({
+    casesheet : req.body.casesheet
+  });
+  const result= casesheet.save();
   User.findOne({gid: req.params.gid}, function (err,user) {
     if(err)
     {
       throw err;
     }
     else if(user){
-      user.casesheet.push(req.body.casesheet);
+      user.casesheet.push(casesheet._id);
       user.save();
       res.send(user);
     }

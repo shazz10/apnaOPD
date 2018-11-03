@@ -24,7 +24,7 @@ router.post('/',(req,res)=>{
     certi_link : req.body.certi_link
   });
   const result= retailer.save();
-  debug(retailer);
+  //debug(retailer);
   res.send(retailer);
 
 });

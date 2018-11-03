@@ -5,18 +5,20 @@ var Doctor = require('../schemas/doctorSchema');
 
 /* GET users listing. */
 router.get('/filter',async (req,res)=>{
-  //console.log(req.query);
+  // var c= req.query.city;
   const doctors = await Doctor.find({
     fee : {$lte:parseInt(req.query.fee)},
-    department : parseInt(req.query.department),
-    city : parseInt(req.query.city)
+    department : parseInt(req.query.department)
+    // 'address.city' : /.*c.*/i
   });
 
   // if(doctors && req.query.date)
   // {
-  //   for (var i = doctors.length - 1; i >= 0; i--) {
-  //     for (var j = doctors[i].time_slab.length - 1; j >= 0; j--) {
-  //       if(doctors[i].time_slab[j].start >= req
+  //   for(var i = doctors.length - 1; i >= 0; i--) {
+  //     for(var j = doctors[i].time_slab.length - 1; j >= 0; j--) {
+  //       if(doctors[i].time_slab[j].end <= req.query.date || !doctors[i].time_slab[j].available){
+  //           doctors[i].time_slab.splice(j,1);
+  //       }
   //     }
   //   }
   // }
@@ -52,6 +54,7 @@ router.post('/',(req,res)=>{
     speciality : req.body.speciality,
     fee : req.body.fee,
     department : req.body.department,
+    time_slab : req.body.time_slab,
     reg_number : req.body.reg_number,
     certi_link : req.body.certi_link
   });
