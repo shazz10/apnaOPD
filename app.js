@@ -5,6 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
+var upload = require('express-fileupload');
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var doctorsRouter = require('./routes/doctors');
@@ -15,6 +18,7 @@ var casesheetsRouter = require("./routes/casesheets");
 var becomesRouter = require('./routes/becomes');
 var prescriptionRouter = require('./routes/prescriptions');
 var offerRouter = require('./routes/offers');
+var uploadPrescription = require('./routes/upload_prescription');
 
 var app = express();
 
@@ -28,6 +32,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(upload());
+
+
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/doctors',doctorsRouter);
@@ -38,6 +45,8 @@ app.use('/api/casesheets',casesheetsRouter);
 app.use('/api/becomes',becomesRouter);
 app.use('/api/prescriptions',prescriptionRouter);
 app.use('/api/offer',offerRouter);
+
+app.use('/api/uploadPrescription',uploadPrescription);
 
 
 // catch 404 and forward to error handler
