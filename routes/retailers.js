@@ -19,7 +19,6 @@ router.post('/',(req,res)=>{
     phone_number : req.body.phone_number,
     office_number : req.body.office_number,
     address : req.body.address,
-    pin : req.body.pin,
     gst_number : req.body.gst_number,
     certi_link : req.body.certi_link
   });
@@ -29,16 +28,14 @@ router.post('/',(req,res)=>{
 
 });
 
-router.put('/presc_list/:gid',function(req, res) {
+router.get('/presc_list/:gid',function(req, res) {
   Retailer.findOne({gid: req.params.gid}, function (err,retailer) {
     if(err)
     {
       throw err;
     }
     else if(retailer){
-      retailer.available_prescriptions.push(req.body.available_prescriptions);
-      retailer.save();
-      res.send(retailer);
+      res.send(retailer.available_prescriptions);
     }
     else {
       res.status(404).send("Record does not exist!");

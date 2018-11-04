@@ -7,17 +7,12 @@ var Retailer = require('../schemas/retailerSchema');
 var Prescription_doctor =require('../schemas/prescription_doctorSchema');
 
 /* GET users listing. */
-router.get('/', function(req, res) {
-  Prescription.find({},function (err,prescription) {
-    if(err) throw err;
-    res.send(prescription);
-  });
-});
-
 router.post('/',async(req,res)=>{
+  console.log(req.body);
   const prescription = new Prescription({
     patient_gid : req.body.patient_gid,
-    prescription_link : req.body.prescription_link,
+    photo_prescription_link : req.body.photo_prescription_link,
+    doctor_prescription_id : req.body.doctor_prescription_id,
     comment: req.body.comment,
     address : req.body.address
   });
@@ -26,7 +21,7 @@ router.post('/',async(req,res)=>{
   const retailers = await Retailer.find({
     'address.pincode' : req.body.address.pincode
   });
-  console.log(retailers);
+  //console.log(retailers);
   retailers.forEach(function(element){
       var pid = {
         prescription_id : prescription._id
@@ -34,8 +29,32 @@ router.post('/',async(req,res)=>{
       element.available_prescriptions.push(pid);
       element.save();
       });
-  //debug(prescription);
   res.send(prescription);
+});
+
+
+router.get('/:gid/:prescription_id', function(req, res) {
+  Prescription.findOne({_id:req.params.prescription_id},function (err,prescription) {
+    if(err) throw err;
+    else if(prescription){
+    res.send(prescription);}
+    else{
+      Retailer.findOne({gid : req.params.gid}, function(err,retailer){
+        if(err) throw err;
+        if(retailer){
+          retailer.available_prescriptions.forEach(function(element){
+              if(element.prescription_id == req.params.prescription_id)
+              {
+                const index = retailer.available_prescriptions.indexOf(element);
+                retailer.available_prescriptions.splice(index,1);
+                retailer.save();
+                res.send("Delete Cache");
+              }
+          });
+        }
+      });
+    }
+  });
 
 });
 

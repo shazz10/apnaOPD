@@ -88,6 +88,28 @@ router.put('/time_slab/:gid',function(req, res) {
   });
 });
 
+router.get('/time_slab/patient/:gid',function(req, res) {
+  //console.log(req.body.time_slab);
+  Doctor.findOne({gid: req.params.gid}, function (err,doctor) {
+    if(err)
+    {
+      throw err;
+    }
+    else if(doctor){
+      var count=[];
+      doctor.visiting.forEach(function(element){
+        
+        count.push(doctor.time_slab)
+        
+      }); 
+      res.send(doctor.time_slab);
+    }
+    else {
+      res.status(404).send("Record does not exist!");
+    }
+  });
+});
+
 router.get('/time_slab/:gid',function(req, res) {
   //console.log(req.body.time_slab);
   Doctor.findOne({gid: req.params.gid}, function (err,doctor) {

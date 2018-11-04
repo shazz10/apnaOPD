@@ -30,7 +30,6 @@ const doctorSchema = new mongoose.Schema({
         {
           patient_gid:String,
           casesheet_uid:String,
-          
         }
       ]
     }
