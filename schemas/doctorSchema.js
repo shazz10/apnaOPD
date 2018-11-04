@@ -5,7 +5,6 @@ const doctorSchema = new mongoose.Schema({
   email : String,
   gid : String,
   phone_number : String,
-  office_number : String,
   address : 
       {
         full_name : String,
@@ -25,10 +24,16 @@ const doctorSchema = new mongoose.Schema({
   certi_link : String,
   department : Number,
   visiting:[
-      {
-        patient_gid:String,
-        casesheet_uid:String
-      }
+    {
+      sl_no: Number,
+      patients:[
+        {
+          patient_gid:String,
+          casesheet_uid:String,
+          
+        }
+      ]
+    }
   ],
   history : [
       {
@@ -39,9 +44,9 @@ const doctorSchema = new mongoose.Schema({
   time_slab : [
     {
         available : Boolean,
-        start : Date,
-        end : Date,
-        time_per : Number
+        sl_no : Number,
+        patients_per : Number
+
     }
   ]
 });

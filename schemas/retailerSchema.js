@@ -5,7 +5,6 @@ const retailerSchema = new mongoose.Schema({
   email : String,
   gid : String,
   phone_number : String,
-  office_number : String,
   address : {
         full_name : String,
         house_no: String,

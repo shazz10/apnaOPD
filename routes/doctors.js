@@ -4,12 +4,15 @@ var router = express.Router();
 var Doctor = require('../schemas/doctorSchema');
 
 /* GET users listing. */
+
+
+
 router.get('/filter',async (req,res)=>{
-  // var c= req.query.city;
+  //var c= req.query.city;
   const doctors = await Doctor.find({
     fee : {$lte:parseInt(req.query.fee)},
-    department : parseInt(req.query.department)
-    // 'address.city' : /.*c.*/i
+    department : parseInt(req.query.department),
+     //'address.city' : /.*c.*/i
   });
 
   // if(doctors && req.query.date)
@@ -42,6 +45,9 @@ router.get('/', function(req, res) {
   });
 });
 
+
+
+
 router.post('/',(req,res)=>{
   const doctor = new Doctor({
     name : req.body.name,
@@ -54,14 +60,48 @@ router.post('/',(req,res)=>{
     speciality : req.body.speciality,
     fee : req.body.fee,
     department : req.body.department,
-    time_slab : req.body.time_slab,
     reg_number : req.body.reg_number,
     certi_link : req.body.certi_link
   });
   const result= doctor.save();
 
   res.json(doctor);
-  debug(doctor);
+  //debug(doctor);
+});
+
+router.put('/time_slab/:gid',function(req, res) {
+  //console.log(req.body.time_slab);
+  Doctor.findOne({gid: req.params.gid}, function (err,doctor) {
+    if(err)
+    {
+      throw err;
+    }
+    else if(doctor){
+      //console.log(req.body.time_slab);
+      doctor.time_slab=req.body.time_slab;
+      doctor.save();
+      res.send(doctor);
+    }
+    else {
+      res.status(404).send("Record does not exist!");
+    }
+  });
+});
+
+router.get('/time_slab/:gid',function(req, res) {
+  //console.log(req.body.time_slab);
+  Doctor.findOne({gid: req.params.gid}, function (err,doctor) {
+    if(err)
+    {
+      throw err;
+    }
+    else if(doctor){
+      res.send(doctor.time_slab);
+    }
+    else {
+      res.status(404).send("Record does not exist!");
+    }
+  });
 });
 
 //Get according to filter

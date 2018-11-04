@@ -17,12 +17,7 @@ const userSchema = new mongoose.Schema({
         phone_number : String
   		}
   ],
-  casesheet :[String],
-  offers : [
-      {
-        
-      }
-  ],
+  offers : [String],
   isDoctor : {type : Boolean, default : false },
   isRetailer : {type : Boolean, default : false },
   isWholesaler : {type : Boolean, default : false },

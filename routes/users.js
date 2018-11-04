@@ -113,7 +113,7 @@ router.post('/',bodyParser,(req,res)=>{
 
   user.save(function(err){
     if(err) throw err;
-    console.log(req.body);
+    //console.log(req.body);
   });
 
   res.send(user);

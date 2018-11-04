@@ -41,23 +41,25 @@ router.get('/', function(req, res) {
 
 
 
-router.post('/:gid',async function(req, res) {
-    const casesheet = new Casesheet({
-    casesheet : req.body.casesheet
-  });
-  const result= casesheet.save();
-  User.findOne({gid: req.params.gid}, function (err,user) {
+router.put('/:gid',async function(req, res) {
+    
+  Casesheet.findOne({patient_gid: req.params.gid}, function (err,casesheet) {
     if(err)
     {
       throw err;
     }
-    else if(user){
-      user.casesheet.push(casesheet._id);
-      user.save();
-      res.send(user);
+    else if(casesheet){
+      casesheet.casesheet.push(req.body.casesheet);
+      casesheet.save();
+      res.send(casesheet);
     }
     else {
-      res.status(404).send("Record does not exist!");
+      const casesheet = new Casesheet({
+      patient_gid : req.params.gid,
+    casesheet : req.body.casesheet
+  });
+  const result= casesheet.save();
+  res.send(casesheet);
     }
   });
 })

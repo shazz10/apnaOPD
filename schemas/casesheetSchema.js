@@ -2,9 +2,10 @@ const mongoose=require('mongoose');
 
 const casesheetSchema = new mongoose.Schema({
 	patient_gid: String,
-	casesheet : 
+	casesheet : [
       {
-
+      	title : String,
+      	time : Date,
         department : Number,
         //Cardio
         pulse : Number,
@@ -47,17 +48,9 @@ const casesheetSchema = new mongoose.Schema({
         accident : String,
         fever : Number,
 
-        comment : String
-
-      },
-      diagnosed_report : [
-      	{
-      		doctor_gid:String,
-      		report:String,
-      		prescription_link : String,
-      		presciption_id:String
       	}
-      ]            
+	]
+       
 });
 
 const casesheets= mongoose.model('Casesheet',casesheetSchema);
