@@ -28,14 +28,17 @@ const doctorSchema = new mongoose.Schema({
       sl_no: Number,
       patients:[
         {
+          time : Date,
           patient_gid:String,
           casesheet_uid:String,
+          comment : String
         }
       ]
     }
   ],
   history : [
       {
+        time : Date,
         patient_gid: String,
         casesheet_uid : String
       }

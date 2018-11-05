@@ -14,24 +14,26 @@ router.get('/:patient_gid', function(req, res) {
 router.post('/',(req,res)=>{
   const offer = new Offer({
   patient_gid : req.body.patient_gid,
-  retailer_gid : req.body.retailer_gid,
-  eoffer: req.body.eoffer,
-  address_id : req.body.address_id,
-  delivery_time : req.body.delivery_time,
-  delivery_charge : req.body.delivery_charge,
   });
+  offer.offers.push(req.body.offers);
   const result= offer.save();
 
   res.json(offer);
-  debug(offer);
+  //debug(offer);
 });
 
-router.delete('/:patient_gid',(req,res)=>{
+router.delete('/delete/:patient_gid/:offer_id',(req,res)=>{
     Offer.find({patient_gid:req.params.patient_gid}, function(err,offer){
       if(err)
         throw err;
-      offer.remove();
-      res.send(offer);
+      offer.offers.forEach(function(element){
+        if(element._id == req.params.offer_id){
+          const index = offer.offers.indexOf(element);
+          offer.offers.splice(index,1);
+          offer.save();
+          res.send(user);
+        }
+      });
     });
   });
 

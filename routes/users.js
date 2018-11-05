@@ -17,7 +17,18 @@ router.get('/', function(req, res) {
 router.get('/:gid', function(req,res) {
   User.findOne({gid: req.params.gid}, function (err,user) {
     if(err) throw err;
-    res.send(user);
+    var u={
+      name : user.name,
+      email : user.email,
+      imageUrl : user.imageUrl,
+      gid : user.gid,
+      isDoctor : user.isDoctor,
+      isRetailer : user.isRetailer,
+      isWholesaler : user.isWholesaler,
+      isManufacturer : user.isManufacturer,
+      isSupplier : user.isSupplier
+    }
+    res.send(u);
   });
 });
 
@@ -40,7 +51,14 @@ router.put('/is/:gid',function(req,res){
   });
 });
 
-
+//send address of a unique gid
+router.get('/address/:gid', function(req,res) {
+  User.findOne({gid: req.params.gid}, function (err,user) {
+    if(err) throw err;
+    if(user)
+    res.send(user.address);
+  });
+});
 
 
 //push new address

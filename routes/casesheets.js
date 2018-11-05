@@ -3,8 +3,8 @@ var router = express.Router();
 
 var debug = require('debug')('apnaopd:server');
 
-var Casesheet = require('../schemas/casesheetSchema');
 var User = require('../schemas/userSchema');
+var Casesheet = require('../schemas/casesheetSchema');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -43,25 +43,50 @@ router.get('/', function(req, res) {
 
 router.put('/:gid',async function(req, res) {
     
-  Casesheet.findOne({patient_gid: req.params.gid}, function (err,casesheet) {
+  User.findOne({gid: req.params.gid}, function (err,user) {
     if(err)
     {
       throw err;
     }
-    else if(casesheet){
-      casesheet.casesheet.push(req.body.casesheet);
-      casesheet.save();
-      res.send(casesheet);
+    else if(user){
+      console.log(user.casesheet);
+      console.log(req.body.casesheet);
+      user.casesheet.unshift(req.body.casesheet);
+      res.send(user.casesheet[0]);
+      user.save();
+
+      
     }
     else {
-      const casesheet = new Casesheet({
-      patient_gid : req.params.gid,
-    casesheet : req.body.casesheet
-  });
-  const result= casesheet.save();
-  res.send(casesheet);
+      res.status(404).send("No user found");
     }
   });
-})
+});
+
+router.get('/:gid/:casesheet_uid',async function(req, res) {
+    
+  User.findOne({gid: req.params.gid}, function (err,user) {
+    if(err)
+    {
+      throw err;
+    }
+    else if(user){
+      for (var i = user.casesheet.length - 1; i >= 0; i--) {
+        if(user.casesheet[i] == null)
+          continue;
+        if(user.casesheet[i]._id == req.params.casesheet_uid){
+          res.send(user.casesheet[i]);
+          break;
+        }
+      }
+
+      
+    }
+    else {
+      res.status(404).send("No user found");
+    }
+  });
+});
+
 
 module.exports = router;

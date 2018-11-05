@@ -55,7 +55,6 @@ router.get('/:gid/:prescription_id', function(req, res) {
       });
     }
   });
-
 });
 
 

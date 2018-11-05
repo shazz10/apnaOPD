@@ -1,18 +1,18 @@
 var express = require('express');
 var router = express.Router();
 
-var Retailer = require('../schemas/retailerSchema');
+var Pathology = require('../schemas/pathologySchema');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
-  Retailer.find({},function (err,retailer) {
+  Pathology.find({},function (err,pathology) {
     if(err) throw err;
-    res.json(retailer)
+    res.json(pathology)
   });
 });
 
 router.post('/',(req,res)=>{
-  const retailer = new Retailer({
+  const pathology = new Pathology({
     name : req.body.name,
     email : req.body.email,
     gid : req.body.gid,
@@ -22,20 +22,20 @@ router.post('/',(req,res)=>{
     gst_number : req.body.gst_number,
     certi_link : req.body.certi_link
   });
-  const result= retailer.save();
-  //debug(retailer);
-  res.send(retailer);
+  const result= pathology.save();
+  //debug(pathology);
+  res.send(pathology);
 
 });
 
 router.get('/presc_list/:gid',function(req, res) {
-  Retailer.findOne({gid: req.params.gid}, function (err,retailer) {
+  Pathology.findOne({gid: req.params.gid}, function (err,pathology) {
     if(err)
     {
       throw err;
     }
-    else if(retailer){
-      res.send(retailer.available_prescriptions);
+    else if(pathology){
+      res.send(pathology.available_prescriptions);
     }
     else {
       res.status(404).send("Record does not exist!");
@@ -45,19 +45,19 @@ router.get('/presc_list/:gid',function(req, res) {
 
 //delete locally stored prescription id
 router.delete('/presc_list/:gid/:prescription_id',function(req, res) {
-  Retailer.findOne({gid: req.params.gid}, function (err,retailer) {
+  Pathology.findOne({gid: req.params.gid}, function (err,pathology) {
     if(err)
     {
       throw err;
     }
-    else if(retailer){
-      retailer.available_prescriptions.forEach(function(element){
+    else if(pathology){
+      pathology.available_prescriptions.forEach(function(element){
         if(element.prescription_id == req.params.prescription_id)
         {
-          const index = retailer.available_prescriptions.indexOf(element);
-          retailer.available_prescriptions.splice(index,1);
-          retailer.save();
-          res.send(retailer);
+          const index = pathology.available_prescriptions.indexOf(element);
+          pathology.available_prescriptions.splice(index,1);
+          pathology.save();
+          res.send(pathology);
         }
       });
     }

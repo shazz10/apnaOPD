@@ -1,9 +1,9 @@
 const mongoose=require('mongoose');
 
 const casesheetSchema = new mongoose.Schema({
-	patient_gid: String,
-	casesheet : [
+	casesheet : 
       {
+      	full_name : String,
       	title : String,
       	time : Date,
         department : Number,
@@ -47,9 +47,9 @@ const casesheetSchema = new mongoose.Schema({
         problem_string : String,
         accident : String,
         fever : Number,
-
+        comment : String
       	}
-	]
+	
        
 });
 

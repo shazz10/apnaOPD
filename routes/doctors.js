@@ -2,11 +2,10 @@ var express = require('express');
 var router = express.Router();
 
 var Doctor = require('../schemas/doctorSchema');
-
+var User = require('../schemas/userSchema');
 /* GET users listing. */
 
-
-
+//get doctors list for some department
 router.get('/filter',async (req,res)=>{
   //var c= req.query.city;
   const doctors = await Doctor.find({
@@ -29,15 +28,24 @@ router.get('/filter',async (req,res)=>{
   res.send(doctors);
 });
 
+//get unique doctor
 router.get('/:gid', function(req, res) {
-  Doctor.find({gid:req.params.gid},function (err,doctor) {
+  Doctor.findOne({gid:req.params.gid},function (err,doctor) {
     if(err) throw err;
-    res.json(doctor)
+    res.json(doctor);
+  });
+});
+
+//get visiting array
+router.get('/visiting/:gid', function(req, res) {
+  Doctor.findOne({gid:req.params.gid},function (err,doctor) {
+    if(err) throw err;
+    res.json(doctor.visiting);
   });
 });
 
 
-
+//get all doctors
 router.get('/', function(req, res) {
   Doctor.find({},function (err,doctor) {
     if(err) throw err;
@@ -47,7 +55,7 @@ router.get('/', function(req, res) {
 
 
 
-
+//post new doctor into database
 router.post('/',(req,res)=>{
   const doctor = new Doctor({
     name : req.body.name,
@@ -69,6 +77,7 @@ router.post('/',(req,res)=>{
   //debug(doctor);
 });
 
+//update time slab
 router.put('/time_slab/:gid',function(req, res) {
   //console.log(req.body.time_slab);
   Doctor.findOne({gid: req.params.gid}, function (err,doctor) {
@@ -88,27 +97,7 @@ router.put('/time_slab/:gid',function(req, res) {
   });
 });
 
-router.get('/time_slab/patient/:gid',function(req, res) {
-  //console.log(req.body.time_slab);
-  Doctor.findOne({gid: req.params.gid}, function (err,doctor) {
-    if(err)
-    {
-      throw err;
-    }
-    else if(doctor){
-      var count=[];
-      doctor.visiting.forEach(function(element){
-        
-        count.push(doctor.time_slab)
-        
-      }); 
-      res.send(doctor.time_slab);
-    }
-    else {
-      res.status(404).send("Record does not exist!");
-    }
-  });
-});
+
 
 router.get('/time_slab/:gid',function(req, res) {
   //console.log(req.body.time_slab);
@@ -126,7 +115,7 @@ router.get('/time_slab/:gid',function(req, res) {
   });
 });
 
-//Get according to filter
+//Get available cities according to filter
 
 
 router.get('/filter/city', async(req,res) => {
@@ -142,5 +131,164 @@ router.get('/filter/city', async(req,res) => {
 });
 
 
+//update visitors array of a unique doctor after pressing next button 
+router.put('/visiting/:doctor_gid/:sl_no', async(req,res)=>{
+  await Doctor.findOne({gid:req.params.doctor_gid},function(err,doctor){
+    if(err)
+    {
+      throw err;
+    }
+    else if(doctor){
+      
+//unique patient can book once
+      var f=0;
+      for (var i = doctor.visiting.length - 1; i >= 0; i--) {
+        for (var j = doctor.visiting[i].patients.length - 1; j >= 0; j--) {
+          if(doctor.visiting[i].patients[j].patient_gid == req.body.patients.patient_gid){
+            //console.log("nana aur booking nai");
+            f=1;
+            break;
+          }
+        }
+        if(f==1)
+          break;
+      }
+      if(f==1)
+        {res.send("nana aur booking nai");return 1;}
+//ends
+
+      var flag=0;
+      doctor.visiting.forEach(function(element){
+        if(element.sl_no == req.params.sl_no)
+        { 
+          flag=1;
+          var count=0;
+          doctor.time_slab.forEach(function(e){
+            if(e.sl_no == element.sl_no && e.available)
+            {
+              count=e.patients_per-element.patients.length;
+              //break;
+            }
+          });
+            if(count>0){
+            element.patients.push({
+              time : new Date(),
+              patient_gid:req.body.patients.patient_gid,
+              casesheet_uid:req.body.patients.casesheet_uid,
+            });
+            doctor.save();
+            
+            //add appointments to user
+            User.findOne({gid:req.body.patients.patient_gid},function(err,user){
+              user.appointments.push({
+                status : 0,
+                doctor_gid : req.params.doctor_gid,
+                casesheet_id : req.body.patients.casesheet_uid,
+                time : req.params.sl_no
+              });
+              user.save();
+            });
+            //
+
+            res.send(element);
+          }
+          else{
+            res.send("Oops!! Please Refresh...")
+          }
+        }
+      });
+      if(flag==0)
+      {
+        var visit={sl_no:req.params.sl_no,patients:[]};
+        doctor.visiting.push(visit);
+        console.log("pushed new ");
+        console.log(req.params.sl_no);
+        doctor.visiting.forEach(function(element){
+          if(element.sl_no == req.params.sl_no)
+          { 
+            flag=1;
+            var count=0;
+            doctor.time_slab.forEach(function(e){
+              if(e.sl_no == element.sl_no && e.available)
+              {
+                count=e.patients_per-element.patients.length;
+                //break;
+              }
+            });
+              if(count>0){
+              element.patients.push({
+                time : new Date(),
+                patient_gid:req.body.patients.patient_gid,
+                casesheet_uid:req.body.patients.casesheet_uid,
+              });
+              doctor.save();
+              
+              //add appointments to user
+              User.findOne({gid:req.body.patients.patient_gid},function(err,user){
+                user.appointments.push({
+                  status : 0,
+                  doctor_gid : req.params.doctor_gid,
+                  casesheet_id : req.body.patients.casesheet_uid,
+                  time : req.params.sl_no
+                });
+                user.save();
+              });
+              //
+
+              res.send(element);
+            }
+            else{
+              res.send("Oops!! Please Refresh...")
+            }
+          }
+      });
+
+      }
+    }
+    else {
+      res.status(404).send("Record does not exist!");
+    }
+  });
+});
+
+
+//delete from visitors array of a unique doctor after it visited or if patient cancels order
+router.delete('/visiting/:doctor_gid/:sl_no/:visiting_id/:cancel', async(req,res)=>{
+  await Doctor.findOne({gid:req.params.doctor_gid},function(err,doctor){
+    if(err)
+    {
+      throw err;
+    }
+    else if(doctor){
+      doctor.visiting.forEach(function(element){
+        if(element.sl_no == req.params.sl_no)
+        {
+          element.patients.forEach(function(e){
+              if(e._id == req.params.visiting_id)
+                {
+                  const index = element.patients.indexOf(e);
+                  element.patients.splice(index,1);
+                  
+                  if(!parseInt(req.params.cancel)){
+                    var h={
+                      time: new Date(),
+                      patient_gid: e.patient_gid,
+                      casesheet_uid : e.casesheet_uid
+                    }
+                    console.log(h);
+                    doctor.history.push(h);
+                  }
+                  doctor.save();
+                  res.send(e);
+                }
+          });    
+        }
+      });
+    }
+    else {
+      res.status(404).send("Record does not exist!");
+    }
+  });
+});
 
 module.exports = router;

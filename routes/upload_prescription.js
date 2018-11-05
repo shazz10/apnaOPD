@@ -16,7 +16,7 @@ router.post('/',async function(req,res){
 
     var prescription = req.files.prescription;
     
-    var pathDir = "/home/shubh/Desktop/apnaOPD/files/prescriptions/"+gid;
+    var pathDir = "/home/suraj/apnaopd/apnaOPD/files/prescriptions/"+gid;
     if(!fs.existsSync(pathDir))
     {
         fs.mkdirSync(pathDir);
@@ -31,7 +31,7 @@ router.post('/',async function(req,res){
         "path" : path
     }
 
-    res.send(result);
+    res.send(path);
 });
 
 module.exports = router;
