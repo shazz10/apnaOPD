@@ -13,7 +13,7 @@ const orderSchema = new mongoose.Schema({
         landmark : String,
         city: String,
         state : String,
-        pincode : Number,
+        pincode : String,
         phone_number : String
   		},
 	time: {type : Date, default : new Date() },
@@ -23,14 +23,14 @@ const orderSchema = new mongoose.Schema({
 					quotation:[
 						{
 							medicine : String,
-							price : Number,
-							offered_price : Number,
-							dosage_per: Number,
-							dosage_day : Number
+							price : String,
+							offered_price : String,
+							dosage_per: String,
+							dosage_day : String
 						}
 					],
-					delivery_time : Date,
-					delivery_charge : Number
+					delivery_time : String,
+					delivery_charge : String
 				}
 			],
 	status : {type: Number, default: 0}

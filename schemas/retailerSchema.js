@@ -15,8 +15,7 @@ const retailerSchema = new mongoose.Schema({
         pincode : Number,
         phone_number : String
 		},
-  available_orders :[String],
-  confirmed_orders : [String],
+  orders :[String],
   gst_number : String,
   certi_link : String
 });

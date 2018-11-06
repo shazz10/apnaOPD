@@ -9,6 +9,7 @@ var Casesheet = require('../schemas/casesheetSchema');
 /* GET function starts */
 router.get('/', function(req, res) {
   var casesheet = {
+    department : [{id: 1,name :"",desc :"",image_link :""}] ,
     rhythm_cardio: [{id:1,title : "Fast"},{id:2,title : "Slow"},{id:3,title : "Normal"}],
     neck_cardio: [{id:1,title : "Normal"},{id:2,title : "Engorged"}],
     chest_cardio: [{id:1,title : "No"},{id:2,title : "Slight"},{id:3,title : "Pulsating"}],
@@ -39,6 +40,7 @@ router.get('/', function(req, res) {
   res.send(casesheet);
 });
 
+//get unique casesheet of specific doctor
 router.get('/:gid/:casesheet_uid',async function(req, res) {
     
   User.findOne({gid: req.params.gid}, function (err,user) {
@@ -47,16 +49,18 @@ router.get('/:gid/:casesheet_uid',async function(req, res) {
       throw err;
     }
     else if(user){
+      var flag=0;
       for (var i = user.casesheet.length - 1; i >= 0; i--) {
         if(user.casesheet[i] == null)
           continue;
         if(user.casesheet[i]._id == req.params.casesheet_uid){
           res.send(user.casesheet[i]);
+          flag=1;
           break;
         }
       }
-
-      
+      if(flag==0)
+        res.status(404).send("Casesheet not found")
     }
     else {
       res.status(404).send("No user found");
@@ -72,27 +76,23 @@ router.get('/:gid/:casesheet_uid',async function(req, res) {
 router.put('/:gid',function(req, res) {
 
   console.log(req.body);
-
-  const casesheet = new Casesheet(req.body);
-  casesheet.save();
   
-    
   User.findOne({gid: req.params.gid}, function (err,user) {
     if(err)
     {
       throw err;
     }
     else if(user){
-      user.casesheet.push(casesheet._id);
+      const casesheet = new Casesheet(req.body);
+      casesheet.save();
+      user.casesheets.push(casesheet._id);
       user.save();  
+      res.send(casesheet);
     }
     else {
       res.status(404).send("No user found");
     }
   });
-
-
-  res.send(casesheet);
 
 });
 

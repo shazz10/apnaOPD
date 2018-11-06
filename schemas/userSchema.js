@@ -16,9 +16,9 @@ const userSchema = new mongoose.Schema({
     pincode : Number,
     phone_number : String
   }],
-  casesheet : [String],
-  orders : [String],
-  appointments:[String],
+  casesheets : [{type:String}],
+  orders : [{type:String}],
+  appointments:[{type:String}],
   isPathologist : {type : Boolean, default : false },
   isDoctor : {type : Boolean, default : false },
   isRetailer : {type : Boolean, default : false },

@@ -13,25 +13,18 @@ const doctorSchema = new mongoose.Schema({
         landmark : String,
         city: String,
         state : String,
-        pincode : Number,
+        pincode : String,
         phone_number : String
       }
   ,
   degree : String ,
-  fee : Number,
+  fee : String,
   reg_number : String,
   certi_link : String,
-  department : Number,
+  department : String,
   visiting:[String],
   history : [String],
-  time_slab : [
-    {
-        available : Boolean,
-        sl_no : Number,
-        patients_per : Number
-
-    }
-  ]
+  time_slab : [String]
 });
 
 const doctors= mongoose.model('Doctor',doctorSchema);

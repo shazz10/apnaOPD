@@ -17,7 +17,6 @@ var wholesalersRouter= require('./routes/wholesalers');
 var casesheetsRouter = require("./routes/casesheets");
 var becomesRouter = require('./routes/becomes');
 var prescriptionRouter = require('./routes/prescriptions');
-var offerRouter = require('./routes/offers');
 var uploadPrescription = require('./routes/upload_prescription');
 var appointmentRouter = require('./routes/appointments');
 var ordersRouter = require('./routes/orders');
@@ -46,8 +45,6 @@ app.use('/api/wholesalers', wholesalersRouter);
 app.use('/api/casesheets',casesheetsRouter);
 app.use('/api/becomes',becomesRouter);
 app.use('/api/prescriptions',prescriptionRouter);
-app.use('/api/offer',offerRouter);
-
 app.use('/api/uploadPrescription',uploadPrescription);
 app.use('/api/appointments',appointmentRouter);
 app.use('/api/orders',ordersRouter);

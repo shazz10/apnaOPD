@@ -3,28 +3,15 @@ var router = express.Router();
 
 var Doctor = require('../schemas/doctorSchema');
 var User = require('../schemas/userSchema');
-/* GET users listing. */
+
+
+/* GET functions starts */
 
 //get doctors list for some department
 router.get('/filter',async (req,res)=>{
-  //var c= req.query.city;
   const doctors = await Doctor.find({
-    fee : {$lte:parseInt(req.query.fee)},
-    department : parseInt(req.query.department),
-     //'address.city' : /.*c.*/i
+    department : parseInt(req.query.department)
   });
-
-  // if(doctors && req.query.date)
-  // {
-  //   for(var i = doctors.length - 1; i >= 0; i--) {
-  //     for(var j = doctors[i].time_slab.length - 1; j >= 0; j--) {
-  //       if(doctors[i].time_slab[j].end <= req.query.date || !doctors[i].time_slab[j].available){
-  //           doctors[i].time_slab.splice(j,1);
-  //       }
-  //     }
-  //   }
-  // }
-
   res.send(doctors);
 });
 
@@ -32,7 +19,12 @@ router.get('/filter',async (req,res)=>{
 router.get('/:gid', function(req, res) {
   Doctor.findOne({gid:req.params.gid},function (err,doctor) {
     if(err) throw err;
-    res.json(doctor);
+    else if(doctor){
+      res.json(doctor);
+    }
+    else{
+      res.send("Doctor not found");
+    }
   });
 });
 
@@ -44,16 +36,49 @@ router.get('/visiting/:gid', function(req, res) {
   });
 });
 
-
 //get all doctors
-router.get('/', function(req, res) {
-  Doctor.find({},function (err,doctor) {
-    if(err) throw err;
-    res.json(doctor)
+// router.get('/', function(req, res) {
+//   Doctor.find({},function (err,doctor) {
+//     if(err) throw err;
+//     res.json(doctor)
+//   });
+// });
+
+//doctors time slab 
+router.get('/time_slab/:gid',function(req, res) {
+  //console.log(req.body.time_slab);
+  Doctor.findOne({gid: req.params.gid}, function (err,doctor) {
+    if(err)
+    {
+      throw err;
+    }
+    else if(doctor){
+      res.send(doctor.time_slab);
+    }
+    else {
+      res.send("No such doctor available");
+    }
   });
 });
 
+//Get available cities according to filter
+router.get('/filter/city', async(req,res) => {
+  var cities =[];
+    await Doctor.find({},function(err,doctor){
+        for (var i = doctor.length - 1; i >= 0; i--) {
+          var city = doctor[i].address.city;
+          if(city )
+          cities.push(city);
+        }
+    });
+    res.send(cities);
+});
 
+
+/* GET function ends */
+
+
+/* POST function starts */
 
 //post new doctor into database
 router.post('/',(req,res)=>{
@@ -73,14 +98,18 @@ router.post('/',(req,res)=>{
   });
   const result= doctor.save();
 
-  res.json(doctor);
+  res.send(doctor);
   //debug(doctor);
 });
 
+/* POST function ends */
+
+/* PUT function starts */
+
 //update time slab
-router.put('/time_slab/:gid',function(req, res) {
+router.put('/time_slab/:doctor_gid',function(req, res) {
   //console.log(req.body.time_slab);
-  Doctor.findOne({gid: req.params.gid}, function (err,doctor) {
+  Doctor.findOne({gid: req.params.doctor_gid}, function (err,doctor) {
     if(err)
     {
       throw err;
@@ -92,44 +121,10 @@ router.put('/time_slab/:gid',function(req, res) {
       res.send(doctor);
     }
     else {
-      res.status(404).send("Record does not exist!");
+      res.send("Doctor does not exist");
     }
   });
 });
-
-
-
-router.get('/time_slab/:gid',function(req, res) {
-  //console.log(req.body.time_slab);
-  Doctor.findOne({gid: req.params.gid}, function (err,doctor) {
-    if(err)
-    {
-      throw err;
-    }
-    else if(doctor){
-      res.send(doctor.time_slab);
-    }
-    else {
-      res.status(404).send("Record does not exist!");
-    }
-  });
-});
-
-//Get available cities according to filter
-
-
-router.get('/filter/city', async(req,res) => {
-  var cities =[];
-    await Doctor.find({},function(err,doctor){
-        for (var i = doctor.length - 1; i >= 0; i--) {
-          var city = doctor[i].address.city;
-          if(city )
-          cities.push(city);
-        }
-    });
-    res.send(cities);
-});
-
 
 //update visitors array of a unique doctor after pressing next button 
 router.put('/visiting/:doctor_gid/:sl_no', async(req,res)=>{
@@ -251,6 +246,9 @@ router.put('/visiting/:doctor_gid/:sl_no', async(req,res)=>{
   });
 });
 
+/* PUT ends here */
+
+/* DELETE ends here */
 
 //delete from visitors array of a unique doctor after it visited or if patient cancels order
 router.delete('/visiting/:doctor_gid/:sl_no/:visiting_id/:cancel', async(req,res)=>{
@@ -290,5 +288,7 @@ router.delete('/visiting/:doctor_gid/:sl_no/:visiting_id/:cancel', async(req,res
     }
   });
 });
+
+/* DELETE ends here */
 
 module.exports = router;
