@@ -1,56 +1,56 @@
 const mongoose=require('mongoose');
 
 const casesheetSchema = new mongoose.Schema({
-	casesheet : 
-      {
+
       	full_name : String,
+        age : String,
       	title : String,
-      	time : Date,
-        department : Number,
+      	time : {type: Date, default : new Date()},
+        department : String,
+
         //Cardio
-        pulse : Number,
-        rhythm : Number,
-        neckveins : Number,
-        chestpain : Number,
-        respiration : Number,
-        cardio_condition : Number,
-        bleeding : Number,
+        pulse : String,
+        rhythm : String,
+        neckveins : String,
+        chestpain : String,
+        respiration : String,
+        cardio_condition : String,
+        bleeding : String,
 
         //GenetoUrinary
-        general_survery : Number,
-        genito_urinary : Number,
-        genito_other : Number,
+        general_survery : String,
+        genito_urinary : String,
+        genito_other : String,
 
         //Eye
-        eye_condition:Number,
-        eye_other:Number,
-        eye_misc : Number,
+        eye_condition:String,
+        eye_other:String,
+        eye_misc : String,
 
         //Ear
-        ear_condition:Number,
-        ear_other:Number,
-        ear_misc : Number,
+        ear_condition:String,
+        ear_other:String,
+        ear_misc : String,
         //Neuro
-        neuro_condition:Number,
-        neuro_other:Number,
-        neuro_misc : Number,
-        behaviour: Number,
-        sensation_abnormality : Number,
+        neuro_condition:String,
+        neuro_other:String,
+        neuro_misc : String,
+        behaviour: String,
+        sensation_abnormality : String,
 
         //General
-        habit : Number,
-        habitat : Number,
-        emotional_status : Number,
-        pain :Number,
-        site_of_problem : Number,
-        vomiting : Number,
+        habit : String,
+        habitat : String,
+        emotional_status : String,
+        pain :String,
+        site_of_problem : String,
+        vomiting : String,
         problem_string : String,
         accident : String,
-        fever : Number,
+        fever : String,
+        
         comment : String
-      	}
-	
-       
+      	     
 });
 
 const casesheets= mongoose.model('Casesheet',casesheetSchema);

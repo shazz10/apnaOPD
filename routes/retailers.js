@@ -35,7 +35,7 @@ router.get('/presc_list/:gid',function(req, res) {
       throw err;
     }
     else if(retailer){
-      res.send(retailer.available_prescriptions);
+      res.send(retailer.available_orders);
     }
     else {
       res.status(404).send("Record does not exist!");

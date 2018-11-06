@@ -6,7 +6,7 @@ var debug = require('debug')('apnaopd:server');
 var User = require('../schemas/userSchema');
 var Casesheet = require('../schemas/casesheetSchema');
 
-/* GET users listing. */
+/* GET function starts */
 router.get('/', function(req, res) {
   var casesheet = {
     rhythm_cardio: [{id:1,title : "Fast"},{id:2,title : "Slow"},{id:3,title : "Normal"}],
@@ -23,7 +23,7 @@ router.get('/', function(req, res) {
     misc_eye: [{id:1,title : "Blindness"},{id:2,title : "Loss of Peripheral Vision"},{id:3,title : "Dark Spot in Vision"}],
     general_genito: [{id:1,title : "Face Puffiness"},{id:2,title : "Oedema"},{id:3,title : "Scabbies"},{id:4,title : "N.A."}],
     genito_genito: [{id:1,title : "Pain in Testis"},{id:2,title : "Scrotal Oedema"},{id:3,title : "Pain and Burning in Urination"},{id:4,title : "N.A."}],
-	other_genito: [{id:1,title : "Fever"},{id:2,title : "Tenderness"}],
+	  other_genito: [{id:1,title : "Fever"},{id:2,title : "Tenderness"}],
     condition_neuro: [{id:1,title : "Consious"},{id:2,title : "Sub-Consious"},{id:3,title : "Normal"}],
     behavioural_neuro: [{id:1,title : "Speech Deject"},{id:2,title : "Anxiety"},{id:3,title : "Depression"}],
     sensation_neuro: [{id:1,title : "Abnormal Smell"},{id:2,title : "Visual Abnormality"},{id:3,title : "Deviation of Angle of Mouth"},{id:4,title : "Loss of Taste"},{id:5,title : "Deafness"},{id:6,title : "Hoarseness of Voice"},{id:7,title : "Normal"}],
@@ -37,30 +37,6 @@ router.get('/', function(req, res) {
     vomit_gen: [{id:1,title : "Yes"},{id:2,title : "No"},{id:3,title : "Nausea"}],   
   }
   res.send(casesheet);
-});
-
-
-
-router.put('/:gid',async function(req, res) {
-    
-  User.findOne({gid: req.params.gid}, function (err,user) {
-    if(err)
-    {
-      throw err;
-    }
-    else if(user){
-      console.log(user.casesheet);
-      console.log(req.body.casesheet);
-      user.casesheet.unshift(req.body.casesheet);
-      res.send(user.casesheet[0]);
-      user.save();
-
-      
-    }
-    else {
-      res.status(404).send("No user found");
-    }
-  });
 });
 
 router.get('/:gid/:casesheet_uid',async function(req, res) {
@@ -87,6 +63,40 @@ router.get('/:gid/:casesheet_uid',async function(req, res) {
     }
   });
 });
+
+
+/*GET function ends*/
+
+/*PUT function starts */
+
+router.put('/:gid',function(req, res) {
+
+  console.log(req.body);
+
+  const casesheet = new Casesheet(req.body);
+  casesheet.save();
+  
+    
+  User.findOne({gid: req.params.gid}, function (err,user) {
+    if(err)
+    {
+      throw err;
+    }
+    else if(user){
+      user.casesheet.push(casesheet._id);
+      user.save();  
+    }
+    else {
+      res.status(404).send("No user found");
+    }
+  });
+
+
+  res.send(casesheet);
+
+});
+
+/*PUT function ends*/
 
 
 module.exports = router;

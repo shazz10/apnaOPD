@@ -19,6 +19,8 @@ var becomesRouter = require('./routes/becomes');
 var prescriptionRouter = require('./routes/prescriptions');
 var offerRouter = require('./routes/offers');
 var uploadPrescription = require('./routes/upload_prescription');
+var appointmentRouter = require('./routes/appointments');
+var ordersRouter = require('./routes/orders');
 
 var app = express();
 
@@ -47,6 +49,8 @@ app.use('/api/prescriptions',prescriptionRouter);
 app.use('/api/offer',offerRouter);
 
 app.use('/api/uploadPrescription',uploadPrescription);
+app.use('/api/appointments',appointmentRouter);
+app.use('/api/orders',ordersRouter);
 
 
 // catch 404 and forward to error handler

@@ -6,37 +6,77 @@ var debug = require('debug')('apnaopd:server');
 
 var User = require('../schemas/userSchema');
 
-/* GET users listing. */
-router.get('/', function(req, res) {
-  User.find({},function (err,user) {
-    if(err) throw err;
-    res.send(user);
-  });
-});
+/* GET functions starts*/
 
+//Get user details
 router.get('/:gid', function(req,res) {
   User.findOne({gid: req.params.gid}, function (err,user) {
     if(err) throw err;
-    var u={
-      name : user.name,
-      email : user.email,
-      imageUrl : user.imageUrl,
-      gid : user.gid,
-      isDoctor : user.isDoctor,
-      isRetailer : user.isRetailer,
-      isWholesaler : user.isWholesaler,
-      isManufacturer : user.isManufacturer,
-      isSupplier : user.isSupplier
+    else if(user){
+      var u={
+        name : user.name,
+        email : user.email,
+        imageUrl : user.imageUrl,
+        gid : user.gid,
+        isPathologist : user.isPathologist,
+        isDoctor : user.isDoctor,
+        isRetailer : user.isRetailer,
+        isWholesaler : user.isWholesaler,
+        isManufacturer : user.isManufacturer,
+        isSupplier : user.isSupplier
+      }
+      res.send(u);
     }
-    res.send(u);
+    else{
+      res.send(null);
+    }
   });
 });
+
+
+//send address of a unique gid
+router.get('/address/:gid', function(req,res) {
+  User.findOne({gid: req.params.gid}, function (err,user) {
+    if(err) throw err;
+    else if(user)
+    res.send(user.address);
+    else
+      res.send(null);
+  });
+});
+
+
+/* GET function ends*/
+
+/* POST function starts */
+
+router.post('/',bodyParser,(req,res)=>{
+
+  const user = new User({
+    name : req.body.name,
+    email : req.body.email,
+    imageUrl : req.body.imageUrl,
+    gid : req.body.gid,
+
+  });
+  user.save(function(err){
+    if(err) throw err;
+  });
+
+  res.send(user);
+
+});
+
+/*POST function ends */
+
+/*PUT function starts*/
 
 //update the user after it becomes something
 router.put('/is/:gid',function(req,res){
   User.findOne({gid:req.params.gid}, function(err,user){
     if(err) throw err;
     else if(user){
+      user['isPathologist'] = req.body.isPathologist;
       user['isDoctor'] = req.body.isDoctor;
       user['isRetailer'] = req.body.isRetailer;
       user['isWholesaler'] = req.body.isWholesaler;
@@ -50,16 +90,6 @@ router.put('/is/:gid',function(req,res){
     }
   });
 });
-
-//send address of a unique gid
-router.get('/address/:gid', function(req,res) {
-  User.findOne({gid: req.params.gid}, function (err,user) {
-    if(err) throw err;
-    if(user)
-    res.send(user.address);
-  });
-});
-
 
 //push new address
 router.put('/address/new/:gid',function(req, res) {
@@ -103,41 +133,7 @@ router.put('/address/delete/:gid/:_id',function(req, res) {
   });
 });
 
-/*
-router.put('/:gid', (req,res) =>{
-  User.findByIdAndUpdate(req.params.gid,{$set : req.body}, function(err,user){
-    if(err) throw err;
-    res.send('User updated')
-  });
-});
-*/
-
-
-router.post('/',bodyParser,(req,res)=>{
-
-  const user = new User({
-    name : req.body.name,
-    email : req.body.email,
-    imageUrl : req.body.imageUrl,
-    gid : req.body.gid,
-    address : req.body.address,
-    isDoctor : req.body.isDoctor,
-    isRetailer : req.body.isRetailer,
-    isWholesaler : req.body.isWholesaler,
-    isManufacturer : req.body.isManufacturer,
-    isSupplier : req.body.isSupplier
-
-  });
-
-  user.save(function(err){
-    if(err) throw err;
-    //console.log(req.body);
-  });
-
-  res.send(user);
-  debug(user);
-
-});
+/*PUT function ends */
 
 
 module.exports = router;

@@ -27,9 +27,6 @@ router.post('/',async function(req,res){
         res.status(500).send(err);
     });
 
-    var result = {
-        "path" : path
-    }
 
     res.send(path);
 });
