@@ -13,7 +13,7 @@ const doctorSchema = new mongoose.Schema({
         landmark : String,
         city: String,
         state : String,
-        pincode : String,
+        pincode : Number,
         phone_number : String
       }
   ,

@@ -62,7 +62,7 @@ router.post('/',async (req,res)=>{
 
 /* PUT function starts */
 
-router.put('/status/:appointment_id/:patient_gid',function(req, res) {
+router.put('/status/:appointment_id/:patient_gid',async function(req, res) {
 
   Appointment.findOne({_id : ObjectId(req.params.appointment_id)},function (err,appointment) {
     if(err) throw err;
@@ -112,7 +112,7 @@ router.put('/status/:appointment_id/:doctor_gid',function(req, res) {
 
 router.delete('/:appointment_id',async (req,res)=>{
 
-  await Appointment.findOne({_id : ObjectId(req.params.appointment_id)},function (err,appointment) {
+  await Appointment.findOne({_id : ObjectId(req.params.appointment_id)},async function (err,appointment) {
     if(err)
      throw err;
     else if(appointment){
