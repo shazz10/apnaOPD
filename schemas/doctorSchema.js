@@ -5,9 +5,9 @@ const doctorSchema = new mongoose.Schema({
   email : String,
   gid : String,
   phone_number : String,
-  address : 
-      {
+  address : {
         full_name : String,
+        shop_name : String,
         house_no: String,
         locality: String,
         landmark : String,
@@ -15,7 +15,7 @@ const doctorSchema = new mongoose.Schema({
         state : String,
         pincode : Number,
         phone_number : String
-      }
+    }
   ,
   degree : String ,
   fee : String,

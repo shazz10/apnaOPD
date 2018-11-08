@@ -16,19 +16,21 @@ router.post('/',async function(req,res){
 
     var prescription = req.files.prescription;
     
-    var pathDir = "/home/suraj/apnaopd/apnaOPD/files/prescriptions/"+gid;
+    var pathDir = "/home/suraj/apnaopd/apnaOPD/public/files/prescriptions/"+gid;
+    var virtualPathDir = "/files/prescriptions/"+gid;
     if(!fs.existsSync(pathDir))
     {
         fs.mkdirSync(pathDir);
     }
     var path = pathDir + "/"+prescription.name;
+    var virtualPath = virtualPathDir + "/"+prescription.name;
     await prescription.mv(path,(err)=>{
         if (err)
         res.status(500).send(err);
     });
 
 
-    res.send(path);
+    res.send(virtualPath);
 });
 
 module.exports = router;

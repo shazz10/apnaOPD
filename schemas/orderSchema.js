@@ -3,6 +3,7 @@ const mongoose=require('mongoose');
 const orderSchema = new mongoose.Schema({
 	patient_gid : String,
 	retailer_gid : String,
+	profile_image : String,
 	photo_prescription_link : String,
     eprescription_id : String,
 	comment: [String],
@@ -29,6 +30,7 @@ const orderSchema = new mongoose.Schema({
 							dosage_day : String
 						}
 					],
+					quotation_link : String,
 					delivery_time : String,
 					delivery_charge : String
 				}

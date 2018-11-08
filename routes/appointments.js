@@ -15,17 +15,59 @@ router.get('/:appointment_id', function(req, res) {
       res.send(appointment);
     }
     else{
-      res.send("Appointment not found");
+      res.send({message : "Appointment not found"});
     }
   });
 });
 
 
-/* GET function stops */
+//get all appointments of a specific user
+router.get('/patient/:patient_gid', function(req, res) {
+  Appointment.find({patient_gid :(req.params.patient_gid)},function (err,appointment) {
+    if(err) throw err;
+    else if(appointment){
+      console.log(appointment);
+      res.send(appointment);
+    }
+    else{
+      res.send({message : "Appointment not found"});
+    }
+  });
+});
+
+//get all visiting appointments of doctor
+router.get('/doctor/visiting/:doctor_gid', function(req, res) {
+  Appointment.find({doctor_gid :(req.params.doctor_gid),status: 0 },function (err,appointment) {
+    if(err) throw err;
+    else if(appointment){
+      res.send(appointment);
+    }
+    else{
+      res.send({message : "Appointment not found"});
+    }
+  });
+});
+
+//get all history appointments of doctor
+router.get('/doctor/history/:doctor_gid', function(req, res) {
+  Appointment.find({doctor_gid :(req.params.doctor_gid),status: 2 },function (err,appointment) {
+    if(err) throw err;
+    else if(appointment){
+      res.send(appointment);
+    }
+    else{
+      res.send({message : "Appointment not found"});
+    }
+  });
+});
+
+/* GET function ends */
 
 /* POST function starts */
 
+//post new appointment and update in doctors visiting and users appoitments
 router.post('/',async (req,res)=>{
+  console.log(req.body);
   const appointment = new Appointment(req.body); 
   const result = await appointment.save();
 
@@ -34,24 +76,36 @@ router.post('/',async (req,res)=>{
       if(err) throw err;
       else if(doctor)
       {
-        doctor.visiting.push(appointment._id);
-        doctor.save();
+        doctor.visiting.unshift(appointment._id);
+        var str = req.body.time_slab.slice(0,5);
+        for (var i = doctor.time_slab.length - 1; i >= 0; i--) {
+          if(doctor.time_slab[i].slice(0,5) == str){
+            //console.log(doctor.time_slab[i]);
+            str = doctor.time_slab[i];
+            doctor.time_slab.splice(i,1);
+            doctor.time_slab.splice(i, 0, (parseInt(str)+1).toString());
+            //console.log(doctor);
+            doctor.save();
+            break;
+          }
+        }
+        
         console.log(doctor.visiting);
       }
       else
-        res.end("No such doctor is there");
+        res.send({message:"No such doctor is there"});
   });
 
   await User.findOne({gid:req.body.patient_gid},function(err,user){
       if(err) throw err;
       else if(user)
       {
-        user.appointments.push(appointment._id);
+        user.appointments.unshift(appointment._id);
         user.save();
         console.log(user.appointments);
       }
       else
-        res.end("No such user is there");
+        res.send({message:"No such user is there"});
   });
 
   res.send(appointment);
@@ -62,6 +116,7 @@ router.post('/',async (req,res)=>{
 
 /* PUT function starts */
 
+//patient has reached the clinic
 router.put('/status/:appointment_id/:patient_gid',async function(req, res) {
 
   Appointment.findOne({_id : ObjectId(req.params.appointment_id)},function (err,appointment) {
@@ -70,18 +125,19 @@ router.put('/status/:appointment_id/:patient_gid',async function(req, res) {
       if(appointment.patient_gid == req.params.patient_gid){
         appointment.status = 1;
         appointment.save();
-        res.send("Patient has arrived");
+        res.send({message:"Patient has arrived"});
       }
       else{
-        res.send("You dont have that privilege bro")
+        res.send({message:"You dont have that privilege bro"});
       }
     }
     else{
-      res.send("Appointment not found");
+      res.send({message:"Appointment not found"});
     }
   });
 });
 
+//patient is diagnosed
 router.put('/status/:appointment_id/:doctor_gid',function(req, res) {
   Appointment.findOne({_id : ObjectId(req.params.appointment_id)},function (err,appointment) {
     if(err) throw err;
@@ -90,18 +146,18 @@ router.put('/status/:appointment_id/:doctor_gid',function(req, res) {
         if(appointment.doctor_gid == req.params.doctor_gid){
           appointment.status = 2;
           appointment.save();
-          res.send("Patient is attended");
+          res.send({message:"Patient is attended"});
         }
         else{
-          res.send("You dont have that privilege bro")
+          res.send({message:"You dont have that privilege bro"});
         }
       }
       else{
-        res.send("Patient hasnt arrived yet");
+        res.send({message:"Patient hasnt arrived yet"});
       }
     }
     else{
-      res.send("Appointment not found");
+      res.send({message:"Appointment not found"});
     }
   });
 });
@@ -110,6 +166,7 @@ router.put('/status/:appointment_id/:doctor_gid',function(req, res) {
 
 /* DELETE function starts */
 
+//apointment is canceled
 router.delete('/:appointment_id',async (req,res)=>{
 
   await Appointment.findOne({_id : ObjectId(req.params.appointment_id)},async function (err,appointment) {
@@ -129,7 +186,7 @@ router.delete('/:appointment_id',async (req,res)=>{
           doctor.save();
         }
         else
-          res.end("No such doctor is there");
+          res.end({message:"No such doctor is there"});
       });
 
       await User.findOne({gid:req.body.patient_gid},function(err,user){
@@ -145,12 +202,12 @@ router.delete('/:appointment_id',async (req,res)=>{
           user.save();
         }
         else
-          res.end("No such user is there");
+          res.end({message:"No such user is there"});
       });
 
     }
     else{
-      res.send("No such appointment");
+      res.send({message:"No such appointment"});
     }
   });  
 });

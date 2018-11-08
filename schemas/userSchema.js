@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   gid : String,
   address : [{
     full_name : String,
+    shop_name : String,
     house_no: String,
     locality: String,
     landmark : String,

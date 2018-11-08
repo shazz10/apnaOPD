@@ -7,6 +7,7 @@ const retailerSchema = new mongoose.Schema({
   phone_number : String,
   address : {
         full_name : String,
+        shop_name : String,
         house_no: String,
         locality: String,
         landmark : String,
@@ -14,8 +15,9 @@ const retailerSchema = new mongoose.Schema({
         state : String,
         pincode : Number,
         phone_number : String
-		},
+    },
   orders :[String],
+  history : [String],
   gst_number : String,
   certi_link : String
 });

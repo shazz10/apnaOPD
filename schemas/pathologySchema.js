@@ -7,6 +7,7 @@ const pathologySchema = new mongoose.Schema({
   phone_number : String,
   address : {
         full_name : String,
+        shop_name : String,
         house_no: String,
         locality: String,
         landmark : String,
@@ -14,7 +15,7 @@ const pathologySchema = new mongoose.Schema({
         state : String,
         pincode : Number,
         phone_number : String
-		},
+    },
   available_prescriptions :[
   		{
   			prescription_id : String

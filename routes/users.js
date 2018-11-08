@@ -8,6 +8,14 @@ var User = require('../schemas/userSchema');
 
 /* GET functions starts*/
 
+router.get('/', function(req,res) {
+  User.find({}, function (err,user) {
+    if(err) throw err;
+    res.send(user);
+  });
+});
+
+
 //Get user details
 router.get('/:gid', function(req,res) {
   User.findOne({gid: req.params.gid}, function (err,user) {
@@ -51,6 +59,7 @@ router.get('/address/:gid', function(req,res) {
 /* POST function starts */
 
 router.post('/',bodyParser,(req,res)=>{
+  console.log(req.body);
 
   const user = new User({
     name : req.body.name,
@@ -91,7 +100,7 @@ router.put('/is/:gid',function(req,res){
   });
 });
 
-//push new address
+//unshift new address
 router.put('/address/new/:gid',function(req, res) {
   User.findOne({gid: req.params.gid}, function (err,user) {
     if(err)
@@ -99,7 +108,7 @@ router.put('/address/new/:gid',function(req, res) {
       throw err;
     }
     else if(user){
-      user.address.push(req.body.address);
+      user.address.unshift(req.body.address);
       user.save();
       res.send(user);
     }
@@ -110,22 +119,22 @@ router.put('/address/new/:gid',function(req, res) {
 });
 
 //delete address by _id
-router.put('/address/delete/:gid/:_id',function(req, res) {
+router.put('/address/delete/:gid/:address_id',function(req, res) {
   User.findOne({gid: req.params.gid}, function (err,user) {
     if(err)
     {
       throw err;
     }
     else if(user){
-      user.address.forEach(function(element){
-        if(element._id == req.params._id)
-        {
-          const index = user.address.indexOf(element);
-          user.address.splice(index,1);
+      for (var i = user.address.length - 1; i >= 0; i--) {
+        if(user.address[i]._id == req.params.address_id){
+          user.address.splice(i,1);
           user.save();
-          res.send(user);
+          break;
         }
-      });
+      }
+      res.send(user);
+
     }
     else {
       res.status(404).send("Record does not exist!");

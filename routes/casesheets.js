@@ -60,10 +60,10 @@ router.get('/:gid/:casesheet_uid',async function(req, res) {
         }
       }
       if(flag==0)
-        res.status(404).send("Casesheet not found")
+        res.status(404).send({message:"Casesheet not found"});
     }
     else {
-      res.status(404).send("No user found");
+      res.status(404).send({message:"No user found"});
     }
   });
 });
@@ -71,9 +71,9 @@ router.get('/:gid/:casesheet_uid',async function(req, res) {
 
 /*GET function ends*/
 
-/*PUT function starts */
+/*POST function starts */
 
-router.put('/:gid',function(req, res) {
+router.post('/:gid',function(req, res) {
 
   console.log(req.body);
   
@@ -85,18 +85,18 @@ router.put('/:gid',function(req, res) {
     else if(user){
       const casesheet = new Casesheet(req.body);
       casesheet.save();
-      user.casesheets.push(casesheet._id);
+      user.casesheets.unshift(casesheet._id);
       user.save();  
       res.send(casesheet);
     }
     else {
-      res.status(404).send("No user found");
+      res.status(404).send({message:"No user found"});
     }
   });
 
 });
 
-/*PUT function ends*/
+/*POST function ends*/
 
 
 module.exports = router;
